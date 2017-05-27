@@ -38,7 +38,7 @@ class DeepQN(object):
         
         # this is our neural net which will approximate things...
         self.model = Sequential()
-        self.model.add(Dense(functools.reduce(lambda x, y: x*y, list(self.num_states)), input_shape=self.num_states, activation='relu'))        
+        self.model.add(Dense(functools.reduce(lambda x, y: x*y, list(self.num_states)), input_shape=self.num_states, activation='relu'))
         self.model.add(Flatten())
         self.model.add(Dense(self.hidden_size, activation='relu'))
         self.model.add(Dense(self.num_actions, activation='relu'))
@@ -79,7 +79,9 @@ class DeepQN(object):
             # batch training...
             # input is the states, targets is the rewards
             self.model.train_on_batch(input_data, targets)
-        
+        else:
+            # if reward is nothing set current state to future state...
+            self.s = s_prime
         # now determine next action to take
         randaction = rand.randint(0, self.num_actions-1)
         
